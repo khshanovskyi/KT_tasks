@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * Use Static Polymorphism and implement methods that will provide amount of words in 'text' parameter. <br><br>
- *
+ * <p>
  * You can run {@link polymorphism.FunctionalStaticPolymorphismTest} to check if you have done it correctly. <br><br>
  *
  * <b>When you implement all methods, revise the implementations and perform deduplication in the code.</b>
@@ -23,9 +23,10 @@ public class FunctionalStaticPolymorphism {
      *     result = "my=2, money=1, mom=2, mine=1, model=1"
      * </pre>
      * <b>Hint: to collect words you can take a look at the {@link Collectors#summingInt(ToIntFunction)}</b>
+     *
      * @return map of words and their amount
      */
-    public Object wordsAmount(String text) {
+    public static Object wordsAmount(String text) {
         throw new ExerciseNotCompletedException();
     }
 
@@ -44,7 +45,7 @@ public class FunctionalStaticPolymorphism {
      * @param maxLength maximum length of word
      * @return map of words and their amount
      */
-    public Object wordsAmount(Object a, Object b, Object c) {
+    public static Object wordsAmount(Object a, Object b, Object c) {
         throw new ExerciseNotCompletedException();
     }
 
@@ -65,7 +66,7 @@ public class FunctionalStaticPolymorphism {
      * @param startWith word should start with this letter
      * @return map of words and their amount
      */
-    public Object wordsAmount(Object a, Object b, Object c, Object d) {
+    public static Object wordsAmount(Object a, Object b, Object c, Object d) {
         throw new ExerciseNotCompletedException();
     }
 
@@ -78,11 +79,11 @@ public class FunctionalStaticPolymorphism {
      *     result = "money=1, mine=1, model=1"
      * </pre>
      *
-     * @param text      text to analyze
+     * @param text       text to analyze
      * @param predicates predicates to filter words
      * @return map of words and their amount
      */
-    public Object wordsAmount(Object a, Object... predicates) {
+    public static Object wordsAmount(Object a, Object... predicates) {
         throw new ExerciseNotCompletedException();
     }
 
