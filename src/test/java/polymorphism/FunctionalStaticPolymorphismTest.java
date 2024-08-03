@@ -1,5 +1,6 @@
 package polymorphism;
 
+import exception.ExerciseNotCompletedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Named;
@@ -52,6 +53,10 @@ class FunctionalStaticPolymorphismTest {
             assertion.accept(actualResult, expectedResult);
         } catch (ClassCastException e) {
             System.out.println("The result should be an instance of Map<String, Integer>");
+            throw e;
+        } catch (ExerciseNotCompletedException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -91,6 +96,10 @@ class FunctionalStaticPolymorphismTest {
             assertion.accept(actualResult, expectedResult);
         } catch (ClassCastException e) {
             System.out.println("The result should be an instance of Map<String, Integer>");
+            throw e;
+        } catch (ExerciseNotCompletedException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -141,6 +150,10 @@ class FunctionalStaticPolymorphismTest {
             assertion.accept(actualResult, expectedResult);
         } catch (ClassCastException e) {
             System.out.println("The result should be an instance of Map<String, Integer>");
+            throw e;
+        } catch (ExerciseNotCompletedException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
@@ -223,6 +236,10 @@ class FunctionalStaticPolymorphismTest {
             assertion.accept(actualResult, expectedResult);
         } catch (ClassCastException e) {
             System.out.println("The result should be an instance of Map<String, Integer>");
+            throw e;
+        } catch (ExerciseNotCompletedException e) {
+            System.out.println(e.getMessage());
+            throw e;
         }
     }
 
