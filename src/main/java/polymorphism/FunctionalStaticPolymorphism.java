@@ -1,10 +1,16 @@
 package polymorphism;
 
-import exception.ExerciseNotCompletedException;
 import lombok.experimental.UtilityClass;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
+
+import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Use Static Polymorphism and implement methods that will provide amount of words in 'text' parameter. <br><br>
@@ -26,8 +32,8 @@ public class FunctionalStaticPolymorphism {
      *
      * @return map of words and their amount
      */
-    public static Object wordsAmount(String text) {
-        throw new ExerciseNotCompletedException();
+    public static Map<String, Integer> wordsAmount(String text) {
+        return wordsAmount(text, s -> true);
     }
 
     /**
@@ -45,8 +51,10 @@ public class FunctionalStaticPolymorphism {
      * @param maxLength maximum length of word
      * @return map of words and their amount
      */
-    public static Object wordsAmount(Object a, Object b, Object c) {
-        throw new ExerciseNotCompletedException();
+    public static Map<String, Integer> wordsAmount(String text, Integer minLength, Integer maxLength) {
+        return wordsAmount(text,
+                s -> s.length() >= minLength,
+                s -> s.length() <= maxLength);
     }
 
     /**
@@ -66,8 +74,11 @@ public class FunctionalStaticPolymorphism {
      * @param startWith word should start with this letter
      * @return map of words and their amount
      */
-    public static Object wordsAmount(Object a, Object b, Object c, Object d) {
-        throw new ExerciseNotCompletedException();
+    public static Map<String, Integer> wordsAmount(String text, Integer minLength, Integer maxLength, String startWith) {
+        return wordsAmount(text,
+                s -> s.length() >= minLength,
+                s -> s.length() <= maxLength,
+                s -> startWith == null || s.startsWith(startWith.toLowerCase()));
     }
 
     /**
@@ -83,8 +94,13 @@ public class FunctionalStaticPolymorphism {
      * @param predicates predicates to filter words
      * @return map of words and their amount
      */
-    public static Object wordsAmount(Object a, Object... predicates) {
-        throw new ExerciseNotCompletedException();
+    public static Map<String, Integer> wordsAmount(String text, Predicate<? super String>... predicates) {
+        return Arrays.stream(text.split(" "))
+                .filter(not(String::isBlank))
+                .map(String::toLowerCase)
+                .filter(s -> predicates == null || Arrays.stream(predicates).allMatch(p -> p.test(s)))
+                .collect(groupingBy(Function.identity(), Collectors.summingInt(ignored -> 1)));
+
     }
 
 }
