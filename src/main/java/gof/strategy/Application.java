@@ -19,8 +19,8 @@ public class Application {
         var random = new Random();
 
         var campaignRepository = new CampaignRepository();
-        var scheduledEventService = new ScheduledEventRepository();
-        var campaignService = new CampaignService(scheduledEventService);
+        var scheduledEventRepository = new ScheduledEventRepository();
+        var campaignService = new CampaignService(scheduledEventRepository);
 
         List<Campaign> campaigns = campaignRepository.getAll();
 
@@ -35,7 +35,7 @@ public class Application {
 
         //Since this point you need to provide your implementation
         ScheduledEventProcessor scheduledEventProcessor = new ScheduledEventProcessor();
-        for (ScheduledEvent scheduledEvent : scheduledEventService.getAll()) {
+        for (ScheduledEvent scheduledEvent : scheduledEventRepository.getAll()) {
             scheduledEventProcessor.processEvent(scheduledEvent);
         }
 

@@ -41,13 +41,13 @@ public class CampaignService {
         }
 
         if (newStatus.equals(CampaignStatus.ONGOING)) {
-            scheduledEventRepository.add(
+            scheduledEventRepository.save(
                     getScheduledEvent(EventType.UPDATE_STATUS, campaign.getName(), campaign.getStartDate())
                             .properties(Map.of(Constants.CAMPAIGN_STATUS, newStatus))
                             .build()
             );
         } else if (newStatus.equals(CampaignStatus.FINISHED)) {
-            scheduledEventRepository.add(
+            scheduledEventRepository.save(
                     getScheduledEvent(EventType.UPDATE_STATUS, campaign.getName(), campaign.getEndDate())
                             .properties(Map.of(Constants.CAMPAIGN_STATUS, newStatus))
                             .build()
@@ -58,7 +58,7 @@ public class CampaignService {
     }
 
     public void scheduleUpdateBanner(Campaign campaign, Instant at) {
-        scheduledEventRepository.add(
+        scheduledEventRepository.save(
                 getScheduledEvent(EventType.UPDATE_BANNER, campaign.getName(), at)
                         .properties(Map.of(Constants.BANNER, banners.get(random.nextInt(banners.size()))))
                         .build()
