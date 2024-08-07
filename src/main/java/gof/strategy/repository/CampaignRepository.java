@@ -30,7 +30,7 @@ public class CampaignRepository {
         }
     }
 
-    public void add(Campaign campaign) {
+    public void save(Campaign campaign) {
         campaignMap.put(campaign.getName(), campaign);
     }
 
