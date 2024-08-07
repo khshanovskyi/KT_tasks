@@ -16,7 +16,7 @@ public class CampaignRepository {
     private final Random random = new Random();
 
     public CampaignRepository() {
-        for (long i = 1; i < 11; i++) {
+        for (long i = 1; i < 6; i++) {
             String name = "campaign" + i;
             campaignMap.put(name,
                     Campaign.builder()
