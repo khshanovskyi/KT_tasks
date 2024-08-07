@@ -1,5 +1,3 @@
-You need to implement .
-
 # Task: Implement Strategy and Template Method Patterns
 - Strategy pattern https://refactoring.guru/design-patterns/strategy
 - Template Method https://refactoring.guru/design-patterns/template-method
