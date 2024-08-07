@@ -24,7 +24,7 @@ public class CampaignRepository {
                             .name(name)
                             .banner("Initial banner")
                             .startDate(Instant.now().plus(random.nextInt(1000), ChronoUnit.SECONDS))
-                            .startDate(Instant.now().plus(random.nextInt(100), ChronoUnit.DAYS))
+                            .endDate(Instant.now().plus(random.nextInt(100), ChronoUnit.DAYS))
                             .build()
             );
         }
