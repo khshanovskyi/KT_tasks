@@ -43,3 +43,4 @@ You are working on a system that processes scheduled events for campaigns. Each 
 5. Implement the `ScheduledEventProcessor` class:
    - add a method to register strategies (or you can do that in the constructor)
    - provide realization for the `process` method that will distribute events to the appropriate strategy based on the event type and resource type
+6. Don't forget to refactor the `Application` class to use in the `ScheduledEventProcessor` Strategies that you have created
