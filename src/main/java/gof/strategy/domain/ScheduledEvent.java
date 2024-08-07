@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.Instant;
@@ -69,6 +70,14 @@ public class ScheduledEvent {
      */
     @Builder.Default
     private String[] errorMessages = new String[0];
+
+    @Builder.Default
+    private int version = 0;
+
+    public int getVersion() {
+        version++;
+        return version;
+    }
 
     public void addErrorMessage(final String message) {
         if (Objects.nonNull(message)) {
