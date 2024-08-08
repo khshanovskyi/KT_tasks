@@ -33,6 +33,7 @@ public class CampaignStatusUpdateStrategy extends AbstractEventStrategy {
             eventWithDefaults.setStatus(Status.COMPLETED);
         } catch (Exception ex) {
             eventWithDefaults.setStatus(Status.FAILED);
+            eventWithDefaults.addErrorMessage(ex.getMessage());
         }
         return this.eventRepository.save(eventWithDefaults);
     }
