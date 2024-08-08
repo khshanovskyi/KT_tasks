@@ -1,30 +1,34 @@
 package gof.strategy.services;
 
-import exception.ExerciseNotCompletedException;
+import gof.strategy.domain.EventResourceType;
 import gof.strategy.domain.EventType;
 import gof.strategy.domain.ScheduledEvent;
-import gof.strategy.repository.CampaignRepository;
-import gof.strategy.repository.ScheduledEventRepository;
-import gof.strategy.services.strategy.CampaignBannerUpdateStrategy;
-import gof.strategy.services.strategy.CampaignStatusUpdateStrategy;
 import gof.strategy.services.strategy.EventStrategy;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class ScheduledEventProcessor {
 
-    private EventStrategy campaignBannerUpdateStrategy;
-    private EventStrategy campaignStatusUpdateStrategy;
+    private final Map<Pair<EventType, EventResourceType>, EventStrategy> eventStrategyMap = new HashMap<>();
 
-    public ScheduledEventProcessor(final ScheduledEventRepository eventRepository,
-                                   final CampaignRepository campaignRepository) {
-        this.campaignBannerUpdateStrategy = new CampaignBannerUpdateStrategy(eventRepository, campaignRepository);
-        this.campaignStatusUpdateStrategy = new CampaignStatusUpdateStrategy(eventRepository, campaignRepository);
+    public ScheduledEventProcessor(final List<EventStrategy> strategies) {
+        registerStrategies(strategies);
     }
+
     public void processEvent(ScheduledEvent event) {
-        if (event.getEventType() == EventType.UPDATE_BANNER) {
-            this.campaignBannerUpdateStrategy.process(event);
-        } else {
-            this.campaignStatusUpdateStrategy.process(event);
-        }
+        Optional.ofNullable(eventStrategyMap.get(Pair.of(event.getEventType(), event.getResourceType())))
+                .ifPresentOrElse(
+                        eventStrategy -> eventStrategy.process(event),
+                        () -> {
+                            throw new RuntimeException("Cannot find a strategy for eventType: %s, eventResourceType: %s".formatted(event.getEventType(), event.getResourceType()));
+                        });
     }
 
+    private void registerStrategies(final List<EventStrategy> strategies) {
+        strategies.forEach(strategy -> eventStrategyMap.put(strategy.getType(), strategy));
+    }
 }
