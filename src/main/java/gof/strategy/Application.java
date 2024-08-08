@@ -34,7 +34,7 @@ public class Application {
         campaignService.scheduleUpdateBanner(campaigns.get(random.nextInt(campaigns.size())), Instant.now().plus(random.nextInt(1000), ChronoUnit.SECONDS));
 
         //Since this point you need to provide your implementation
-        ScheduledEventProcessor scheduledEventProcessor = new ScheduledEventProcessor();
+        ScheduledEventProcessor scheduledEventProcessor = new ScheduledEventProcessor(scheduledEventRepository, campaignRepository);
         for (ScheduledEvent scheduledEvent : scheduledEventRepository.getAll()) {
             scheduledEventProcessor.processEvent(scheduledEvent);
         }
