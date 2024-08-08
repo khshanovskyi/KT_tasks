@@ -14,17 +14,17 @@ import org.apache.commons.lang3.tuple.Pair;
 public class CampaignStatusUpdateStrategy extends AbstractEventStrategy {
 
     private CampaignRepository campaignRepository;
+    private ScheduledEventRepository scheduledEventRepository;
 
     public CampaignStatusUpdateStrategy(ScheduledEventRepository scheduledEventRepository,
                                         CampaignRepository campaignRepository) {
-        super(scheduledEventRepository);
+        this.scheduledEventRepository = scheduledEventRepository;
         this.campaignRepository = campaignRepository;
     }
 
     @Override
     public ScheduledEvent process(ScheduledEvent event) {
         super.process(event);
-
         try {
             Campaign campaign = campaignRepository.getCampaignByName(event.getResourceName())
                     .orElseThrow(() -> new RuntimeException("No campaign present"));
@@ -38,6 +38,11 @@ public class CampaignStatusUpdateStrategy extends AbstractEventStrategy {
             event.setStatus(Status.FAILED);
         }
         event.setStatus(Status.COMPLETED);
+        return saveEvent(event);
+    }
+
+    @Override
+    public ScheduledEvent saveEvent(ScheduledEvent event) {
         return scheduledEventRepository.save(event);
     }
 

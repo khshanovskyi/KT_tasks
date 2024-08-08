@@ -1,32 +1,26 @@
 package gof.strategy.services;
 
-import exception.ExerciseNotCompletedException;
-import gof.strategy.domain.EventResourceType;
-import gof.strategy.domain.EventType;
 import gof.strategy.domain.ScheduledEvent;
-import gof.strategy.services.strategy.CampaignBannerUpdateStrategy;
-import gof.strategy.services.strategy.CampaignStatusUpdateStrategy;
+import gof.strategy.services.strategy.EventStrategy;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 public class ScheduledEventProcessor {
 
-    private CampaignBannerUpdateStrategy campaignBannerUpdateStrategy;
-    private CampaignStatusUpdateStrategy campaignStatusUpdateStrategy;
+    private HashMap<Pair, EventStrategy> eventStrategyMap = new HashMap<>();
 
-    public ScheduledEventProcessor(CampaignBannerUpdateStrategy campaignBannerUpdateStrategy,
-                                   CampaignStatusUpdateStrategy campaignStatusUpdateStrategy) {
-        this.campaignBannerUpdateStrategy = campaignBannerUpdateStrategy;
-        this.campaignStatusUpdateStrategy = campaignStatusUpdateStrategy;
+    public ScheduledEventProcessor(List<EventStrategy> eventStrategies) {
+        for (EventStrategy eventStrategy : eventStrategies) {
+            eventStrategyMap.put(eventStrategy.getType(), eventStrategy);
+        }
     }
 
     public void processEvent(ScheduledEvent event) {
-        if (event.getEventType() == EventType.UPDATE_STATUS
-                && event.getResourceType() == EventResourceType.CAMPAIGN) {
-            campaignStatusUpdateStrategy.process(event);
-        }
-        if (event.getEventType() == EventType.UPDATE_BANNER
-                && event.getResourceType() == EventResourceType.CAMPAIGN) {
-            campaignBannerUpdateStrategy.process(event);
-        }
+        Optional.ofNullable(eventStrategyMap.get(Pair.of(event.getEventType(), event.getResourceType())))
+                .ifPresent(eventStrategy -> eventStrategy.process(event));
     }
 
 }

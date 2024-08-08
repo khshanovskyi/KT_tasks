@@ -2,15 +2,8 @@ package gof.strategy.services.strategy;
 
 import gof.strategy.domain.ScheduledEvent;
 import gof.strategy.domain.Status;
-import gof.strategy.repository.ScheduledEventRepository;
 
 public abstract class AbstractEventStrategy implements EventStrategy {
-
-    protected ScheduledEventRepository scheduledEventRepository;
-
-    public AbstractEventStrategy(ScheduledEventRepository scheduledEventRepository) {
-        this.scheduledEventRepository = scheduledEventRepository;
-    }
 
     @Override
     public ScheduledEvent process(ScheduledEvent event) {
@@ -19,6 +12,8 @@ public abstract class AbstractEventStrategy implements EventStrategy {
         } else {
             event.setStatus(Status.ONGOING);
         }
-        return scheduledEventRepository.save(event);
+        return saveEvent(event);
     }
+
+    public abstract ScheduledEvent saveEvent(ScheduledEvent event);
 }

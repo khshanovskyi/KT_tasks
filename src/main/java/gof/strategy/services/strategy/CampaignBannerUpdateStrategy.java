@@ -13,10 +13,11 @@ import org.apache.commons.lang3.tuple.Pair;
 public class CampaignBannerUpdateStrategy extends AbstractEventStrategy{
 
     private CampaignRepository campaignRepository;
+    private ScheduledEventRepository scheduledEventRepository;
 
     public CampaignBannerUpdateStrategy(ScheduledEventRepository scheduledEventRepository,
                                         CampaignRepository campaignRepository) {
-        super(scheduledEventRepository);
+        this.scheduledEventRepository = scheduledEventRepository;
         this.campaignRepository = campaignRepository;
     }
 
@@ -37,6 +38,11 @@ public class CampaignBannerUpdateStrategy extends AbstractEventStrategy{
         }
 
         event.setStatus(Status.COMPLETED);
+        return saveEvent(event);
+    }
+
+    @Override
+    public ScheduledEvent saveEvent(ScheduledEvent event) {
         return scheduledEventRepository.save(event);
     }
 
