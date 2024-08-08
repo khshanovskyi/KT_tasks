@@ -7,6 +7,8 @@ import gof.strategy.repository.ScheduledEventRepository;
 
 public abstract class AbstractEventStrategy implements EventStrategy {
 
+    private static final int MAX_VERSION = 10;
+
     protected final ScheduledEventRepository eventRepository;
     protected final CampaignRepository campaignRepository;
 
@@ -17,11 +19,15 @@ public abstract class AbstractEventStrategy implements EventStrategy {
 
     @Override
     public ScheduledEvent process(final ScheduledEvent event) {
-        if (event.getStatus() == Status.FAILED && event.getVersion() > 10) {
+        if (isFailed(event)) {
             event.setStatus(Status.TERMINATED);
         } else {
             event.setStatus(Status.ONGOING);
         }
         return this.eventRepository.save(event);
+    }
+
+    private boolean isFailed(final ScheduledEvent event) {
+        return event.getStatus() == Status.FAILED && event.getVersion() > MAX_VERSION;
     }
 }
