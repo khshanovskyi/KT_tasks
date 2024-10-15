@@ -4,9 +4,11 @@ import gof.strategy.domain.ScheduledEvent;
 import gof.strategy.domain.campaign.Campaign;
 import gof.strategy.domain.campaign.CampaignStatus;
 import gof.strategy.repository.CampaignRepository;
-import gof.strategy.services.CampaignService;
 import gof.strategy.repository.ScheduledEventRepository;
+import gof.strategy.services.CampaignService;
 import gof.strategy.services.ScheduledEventProcessor;
+import gof.strategy.services.strategy.CampaignBannerUpdateStrategy;
+import gof.strategy.services.strategy.CampaignStatusUpdateStrategy;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -34,7 +36,12 @@ public class Application {
         campaignService.scheduleUpdateBanner(campaigns.get(random.nextInt(campaigns.size())), Instant.now().plus(random.nextInt(1000), ChronoUnit.SECONDS));
 
         //Since this point you need to provide your implementation
-        ScheduledEventProcessor scheduledEventProcessor = new ScheduledEventProcessor();
+        final var strategies = List.of(
+                new CampaignBannerUpdateStrategy(scheduledEventRepository, campaignRepository),
+                new CampaignStatusUpdateStrategy(scheduledEventRepository, campaignRepository)
+        );
+
+        ScheduledEventProcessor scheduledEventProcessor = new ScheduledEventProcessor(strategies);
         for (ScheduledEvent scheduledEvent : scheduledEventRepository.getAll()) {
             scheduledEventProcessor.processEvent(scheduledEvent);
         }
