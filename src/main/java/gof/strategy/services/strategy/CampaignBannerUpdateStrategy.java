@@ -24,7 +24,7 @@ public class CampaignBannerUpdateStrategy extends AbstractEventStrategy {
     @Override
     public ScheduledEvent process(ScheduledEvent event) {
         try {
-            event = preProcess(event);
+            event = super.process(event);
             Campaign campaign = campaignRepository.getCampaignByName(event.getResourceName())
                     .orElseThrow(() -> new RuntimeException("Campaign is not found"));
 
