@@ -5,7 +5,6 @@ import gof.strategy.domain.EventType;
 import gof.strategy.domain.ScheduledEvent;
 import gof.strategy.domain.Status;
 import gof.strategy.domain.campaign.Campaign;
-import gof.strategy.domain.campaign.CampaignStatus;
 import gof.strategy.repository.CampaignRepository;
 import gof.strategy.repository.ScheduledEventRepository;
 import gof.strategy.utils.Constants;
@@ -25,7 +24,7 @@ public class CampaignBannerUpdateStrategy extends AbstractEventStrategy {
     @Override
     public ScheduledEvent process(ScheduledEvent event) {
         try {
-            event = super.process(event);
+            event = preProcess(event);
             Campaign campaign = campaignRepository.getCampaignByName(event.getResourceName())
                     .orElseThrow(() -> new RuntimeException("Campaign is not found"));
 

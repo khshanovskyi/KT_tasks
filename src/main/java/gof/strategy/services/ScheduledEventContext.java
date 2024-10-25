@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class ScheduledEventProcessor {
+public class ScheduledEventContext {
 
     private final Map<Pair<EventType, EventResourceType>, EventStrategy> eventStrategiesMap = new HashMap<>();
 
-    public ScheduledEventProcessor(List<EventStrategy> eventStrategies) {
+    public ScheduledEventContext(List<EventStrategy> eventStrategies) {
         for (EventStrategy eventStrategy : eventStrategies) {
             eventStrategiesMap.put(eventStrategy.getType(), eventStrategy);
         }

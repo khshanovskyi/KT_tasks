@@ -10,8 +10,7 @@ public abstract class AbstractEventStrategy implements EventStrategy {
 
     protected final ScheduledEventRepository eventRepository;
 
-    @Override
-    public ScheduledEvent process(ScheduledEvent event) {
+    protected final ScheduledEvent preProcess(ScheduledEvent event) {
         if (Status.FAILED.equals(event.getStatus()) && event.getVersion() > 10) {
             event.setStatus(Status.EXCLUDED);
         } else {
@@ -20,4 +19,5 @@ public abstract class AbstractEventStrategy implements EventStrategy {
 
         return eventRepository.save(event);
     }
+
 }
