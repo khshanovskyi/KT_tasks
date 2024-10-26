@@ -7,6 +7,8 @@ import gof.strategy.repository.CampaignRepository;
 import gof.strategy.services.CampaignService;
 import gof.strategy.repository.ScheduledEventRepository;
 import gof.strategy.services.ScheduledEventContext;
+import gof.strategy.services.strategy.CampaignBannerUpdateStrategy;
+import gof.strategy.services.strategy.CampaignStatusUpdateStrategy;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -34,7 +36,9 @@ public class Application {
         campaignService.scheduleUpdateBanner(campaigns.get(random.nextInt(campaigns.size())), Instant.now().plus(random.nextInt(1000), ChronoUnit.SECONDS));
 
         //Since this point you need to provide your implementation
-        ScheduledEventContext scheduledEventContext = new ScheduledEventContext();
+        CampaignStatusUpdateStrategy campaignStatusUpdateStrategy = new CampaignStatusUpdateStrategy(scheduledEventRepository, campaignRepository);
+        CampaignBannerUpdateStrategy campaignBannerUpdateStrategy = new CampaignBannerUpdateStrategy(scheduledEventRepository, campaignRepository);
+        ScheduledEventContext scheduledEventContext = new ScheduledEventContext(List.of(campaignBannerUpdateStrategy,campaignStatusUpdateStrategy));
         for (ScheduledEvent scheduledEvent : scheduledEventRepository.getAll()) {
             scheduledEventContext.processEvent(scheduledEvent);
         }
