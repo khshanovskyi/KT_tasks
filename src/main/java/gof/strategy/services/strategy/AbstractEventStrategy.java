@@ -17,7 +17,13 @@ public abstract class AbstractEventStrategy implements EventStrategy {
     @Override
     public ScheduledEvent process(ScheduledEvent event) {
         ScheduledEvent preProcessedEvent = preProcess(event);
-        return processImpl(preProcessedEvent);
+        ScheduledEvent processedEvent = null;
+        try {
+            processedEvent = processImpl(preProcessedEvent);
+        }catch (Exception exception){
+            event.setStatus(Status.FAILED);
+        }
+        return processedEvent;
     }
 
     protected final ScheduledEvent preProcess(ScheduledEvent event) {
@@ -27,8 +33,8 @@ public abstract class AbstractEventStrategy implements EventStrategy {
             } else {
                 event.setStatus(Status.ONGOING);
             }
-        }catch (Exception e) {
-            // NPE
+        } catch (Exception e) {
+            // NPE getStatus() from client
             System.out.println(e);
         }
 

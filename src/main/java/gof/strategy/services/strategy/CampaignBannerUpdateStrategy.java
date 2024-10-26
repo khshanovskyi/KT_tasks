@@ -23,22 +23,19 @@ public class CampaignBannerUpdateStrategy extends AbstractEventStrategy {
 
     @Override
     protected ScheduledEvent processImpl(ScheduledEvent scheduledEvent) {
-        try {
-            Campaign campaign = campaignRepository.getCampaignByName(scheduledEvent.getResourceName())
-                    .orElseThrow(() -> new RuntimeException("Campaign not found"));
-            Optional.ofNullable(scheduledEvent.getProperties().get(Constants.BANNER))
-                    .map(String::valueOf)
-                    .ifPresentOrElse(
-                            banner -> {
-                                campaign.setBanner(banner);
-                                campaignRepository.save(campaign);
-                            },
-                            () -> new RuntimeException("no banner present")
-                    );
-            scheduledEvent.setStatus(Status.COMPLETED);
-        } catch (Exception exception) {
-            scheduledEvent.setStatus(Status.FAILED);
-        }
+        Campaign campaign = campaignRepository.getCampaignByName(scheduledEvent.getResourceName())
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+        Optional.ofNullable(scheduledEvent.getProperties().get(Constants.BANNER))
+                .map(String::valueOf)
+                .ifPresentOrElse(
+                        banner -> {
+                            campaign.setBanner(banner);
+                            campaignRepository.save(campaign);
+                        },
+                        () -> new RuntimeException("no banner present")
+                );
+        scheduledEvent.setStatus(Status.COMPLETED);
+
         return eventRepository.save(scheduledEvent);
     }
 
